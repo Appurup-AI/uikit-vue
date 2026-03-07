@@ -1,6 +1,5 @@
 <script setup>
-const emits = defineEmits(["update:checked"]);
-
+const emits = defineEmits(["update:checked", "updateCheckboxGroup"]);
 const props = defineProps({
   name: {
     type: String,
@@ -11,10 +10,6 @@ const props = defineProps({
     default: "",
   },
   value: {
-    type: String,
-    default: "",
-  },
-  name: {
     type: String,
     default: "",
   },
@@ -30,17 +25,29 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  group: {
+    type: Boolean,
+    default: false,
+  },
+  type: {
+    type: String,
+    default: "checkbox",
+  },
 });
 
 const handleClick = (event) => {
-  emits("update:checked", event.target.checked);
+  if (props.group) {
+    emits("updateCheckboxGroup", { optionId: props.id, checked: event.target.checked });
+  } else {
+    emits("update:checked", event.target.checked);
+  }
 };
 </script>
 
 <template>
-  <div>
+  <div :class="[{ 'switch-container': type === 'switch' }]">
     <input
-      class="checkbox"
+      :class="[{ checkbox: type === 'checkbox' }, { switch: type === 'switch' }]"
       type="checkbox"
       :name="name"
       :id="id"
@@ -50,6 +57,7 @@ const handleClick = (event) => {
       @input="handleClick($event)"
     />
     <label :for="id">{{ label }}</label>
+    <label :for="id" class="switch__label" v-if="type === 'switch'">{{ label }}</label>
   </div>
 </template>
 
@@ -65,7 +73,7 @@ const handleClick = (event) => {
   }
   & + label::before {
     content: "";
-    display: inline-flex;
+    display: inline-block;
     width: 24px;
     height: 24px;
     flex-shrink: 0;
@@ -89,12 +97,68 @@ const handleClick = (event) => {
     background-color: var(--primary);
     border: 1px solid #ecebed;
   }
+  &:focus + label::before {
+    box-shadow: 0px 7px 20px rgba(0, 0, 0, 0.07);
+  }
   &:focus:not(:checked) + label::before {
     border-color: var(--primary);
   }
   &:disabled + label::before {
     background-color: #e9ecef;
     border: 1px solid #ecebed;
+  }
+}
+
+.switch {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+  &-container {
+    display: flex;
+    align-items: center;
+  }
+  &__label {
+    margin-left: 10px;
+  }
+  & + label {
+    cursor: pointer;
+    text-indent: -9999px;
+    width: 50px;
+    height: 35px;
+    background: #fafafa;
+    border: 1px solid #adb5bd;
+    display: block;
+    border-radius: 100px;
+    position: relative;
+    &:after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 5px;
+      width: 26px;
+      height: 26px;
+      background: #fff;
+      background: var(--primary);
+      border-radius: 90px;
+      transition: 0.3s;
+      transform: translateY(-50%);
+    }
+  }
+  &:checked {
+    & + label {
+      background: var(--primary);
+      &:after {
+        background: #fff;
+        left: calc(100% - 5px);
+        transform: translateX(-100%) translateY(-50%);
+      }
+      &:active:after {
+        width: 33px;
+      }
+    }
   }
 }
 </style>

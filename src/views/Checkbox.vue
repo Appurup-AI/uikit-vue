@@ -1,26 +1,28 @@
 <script setup>
-import Checkbox from "@/components/Checkbox/Checkbox.vue";
 import { ref } from "vue";
+import Checkbox from "@/components/Checkbox/Checkbox.vue";
+import CheckboxGroup from "@/components/Checkbox/CheckboxGroup.vue";
 
 const checkboxActive = ref(true);
 const checkboxDisabled = ref(true);
 const checkboxDisabledChecked = ref(true);
 
 const listOfHeroes = ref([
-  { name: "Spider Man", id: 1 },
-  { name: "Batman", id: 2 },
-  { name: "Thor", id: 3 },
-  { name: "Loki", id: 4 },
+  { name: "Spider Man", id: "h1" },
+  { name: "Batman", id: "h2" },
+  { name: "Tor", id: "h3" },
+  { name: "Loki", id: "h4" },
 ]);
-
 const selectedHeroes = ref([]);
+
+const switchProfessional = ref(false);
 </script>
+
 <template>
   <h1 class="heading-1">Checkbox</h1>
-
   <h2 class="heading-2">Checkbox Active</h2>
   <div class="line">
-    <Checkbox
+    <checkbox
       label="Checkbox Active"
       id="checkboxActive"
       name="checkboxActive"
@@ -28,10 +30,9 @@ const selectedHeroes = ref([]);
       v-model:checked="checkboxActive"
     />
   </div>
-
   <h2 class="heading-2">Checkbox Disabled</h2>
   <div class="line">
-    <Checkbox
+    <checkbox
       label="Checkbox Disabled"
       id="checkboxDisabled"
       name="checkboxDisabled"
@@ -40,11 +41,21 @@ const selectedHeroes = ref([]);
       v-model:checked="checkboxDisabledChecked"
     />
   </div>
-
   <h2 class="heading-2">Checkbox Group</h2>
-  <div class="line">
+  <div class="line line__block">
     <p>Selected Heroes: {{ selectedHeroes }}</p>
+    <checkbox-group v-model:value="selectedHeroes" name="heroes" :options="listOfHeroes" />
+  </div>
+  <h2 class="heading-2">Switch</h2>
+  <div class="line line__block">
+    <p>Switch: {{ switchProfessional }}</p>
+    <checkbox
+      label="I'm a professional"
+      id="switch"
+      name="switch"
+      value="I'm a professional"
+      type="switch"
+      v-model:checked="switchProfessional"
+    />
   </div>
 </template>
-
-<style lang="scss" scoped></style>

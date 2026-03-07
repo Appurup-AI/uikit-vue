@@ -1,7 +1,16 @@
 <script setup>
-import Checkbox from "@/components/Checkbox.vue";
+import Checkbox from "@/components/Checkbox/Checkbox.vue";
 
+const emit = defineEmits(["update:value"]);
 const props = defineProps({
+  value: {
+    type: Array,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
   options: {
     type: Array,
     required: true,
@@ -12,6 +21,28 @@ const props = defineProps({
     },
   },
 });
+
+const check = (params) => {
+  let updateValue = [...props.value];
+  if (params.checked) {
+    updateValue.push(params.optionId);
+  } else {
+    updateValue.splice(updateValue.indexOf(params.optionId), 1);
+  }
+  emit("update:value", updateValue);
+};
 </script>
-<template></template>
-<style lang="scss" scoped></style>
+
+<template>
+  <div v-for="option in options" :key="option.id">
+    <checkbox
+      :label="option.name"
+      :id="option.id"
+      :name="name"
+      :value="option.name"
+      :checked="value.includes(option.id)"
+      group
+      @updateCheckboxGroup="check"
+    />
+  </div>
+</template>
