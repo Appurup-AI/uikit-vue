@@ -61,7 +61,6 @@ const clickOnTab = (tabName) => {
   &-content {
     padding: 20px;
     border-radius: 7px;
-    background: #fff;
   }
 }
 </style>
