@@ -11,6 +11,14 @@
   --warning-hover: #ffc7a6;
   --danger: #ff647c;
   --danger-hover: #fdafbb;
+  --bg-primary: #fafafa;
+  --font-primray: #000;
+  --border-primary: #1c202a;
+}
+
+:root.dark {
+  --bg-primary: #030712;
+  --font-primray: #d1d5dc;
 }
 
 * {
@@ -21,13 +29,13 @@ body {
   font-family: "Avenir", Arial, Helvetica;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #000;
-  background: #fafafa;
+  color: var(--font-primray);
+  background: var(--bg-primary);
   margin: 0;
 }
 
 a {
-  color: #000;
+  color: var(--font-primray);
   text-decoration: none;
 }
 
